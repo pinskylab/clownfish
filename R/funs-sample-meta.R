@@ -93,15 +93,15 @@ sample_latlon <- function(sample_ids){
     select(sample_id,anem_table_id, anem_obs_time, dive_table_id, date, gps) %>%
     filter(sample_id %in% sample_ids) %>%
     # identify time zone as Asia
-    mutate(anem_obs_time = lubridate::force_tz(ymd_hms(str_c(date, anem_obs_time, sep = " ")), tzone = "Asia/Manila"),
+    mutate(anem_obs_time = lubridate::force_tz(lubridate::ymd_hms(str_c(date, anem_obs_time, sep = " ")), tzone = "Asia/Manila"),
            # convert to UTC
            anem_obs_time = lubridate::with_tz(anem_obs_time, tzone = "UTC"),
-           gpx_date = date(.data$anem_obs_time),
-           gpx_hour = hour(anem_obs_time),
-           minute = minute(anem_obs_time))
-
-
-  # find the lat lon
+           gpx_date = lubridate::date(anem_obs_time),
+           gpx_hour = lubridate::hour(anem_obs_time),
+           minute = lubridate::minute(anem_obs_time))
+           
+           
+leyte <- read_db("Leyte")    
   gpx <- leyte %>%
     tbl("GPX") %>%
     select(lat, lon, time, unit) %>%
