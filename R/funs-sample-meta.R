@@ -107,7 +107,7 @@ leyte <- read_db("Leyte")
     select(lat, lon, time, unit) %>%
     collect() %>%
     separate(time, into = c("gpx_date", "gps_time"), sep = " ") %>%
-    mutate(gpx_date = date(.data$gpx_date)) %>%
+    mutate(gpx_date = lubridate::date(gpx_date)) %>%
     filter(gpx_date %in% fish$gpx_date) %>%
     separate(gps_time, into = c("gpx_hour", "minute", "second"), sep = ":") %>%
     filter(as.numeric(gpx_hour) %in% fish$gpx_hour & as.numeric(minute) %in% fish$minute) %>%
