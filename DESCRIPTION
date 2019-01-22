@@ -1,0 +1,18 @@
+Package: clownfish
+Title: Functions for importing and wrangling clownfish project data
+Version: 0.0.0.9000
+Authors@R: person("Michelle", "Stuart", email = "michelle.stuart@rutgers.edu", role = c("aut", "cre"))
+Description: Functions for importing and wrangling clownfish project data.
+Depends: R (>= 3.5.1)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Imports: 
+    RMySQL,
+    dplyr,
+    lubridate,
+    readr,
+    stringr,
+    tibble,
+    tidyr
