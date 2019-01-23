@@ -7,7 +7,7 @@
 write_db(db_name)
 }
 \arguments{
-\item{db_name}{}
+\item{db_name}{name of db you want to access}
 }
 \value{
 database connection

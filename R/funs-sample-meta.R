@@ -22,7 +22,7 @@ read_db <- function(x){
 
 #' write_db establishes a connection with the mysql db with intent to change it
 #'
-#' @param db_name
+#' @param db_name name of db you want to access
 #'
 #' @return database connection
 #' @export
@@ -37,7 +37,7 @@ write_db <- function(db_name){
 
 #' site_recap finds recaptured fish by site
 #'
-#' @param site_name
+#' @param site_name name of site of interest
 #'
 #' @return a table of fish that have been recaptured at a given site
 #' @export
@@ -79,7 +79,7 @@ daterange_dive <- function(begin_date, end_date){
 
 #' sample_latlon
 #'
-#' @param sample_ids 
+#' @param sample_ids table containing sample ids
 #'
 #' @return a table of sample_ids with lat lons
 #' @export
@@ -176,10 +176,12 @@ anem_latlon <- function(anem_ids){
 
 
 #' for a given anemone , returns site, date, divetype
+#'
+#' @param anems_ids table containing anem ids
+#'
 #' @export
 #' @name anem_dive
 #' @author Michelle Stuart
-#' @param anem_ids anem(s) for which to get data
 #' @examples
 #' info <- anem_dive(2183)
 

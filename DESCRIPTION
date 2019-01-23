@@ -15,4 +15,6 @@ Imports:
     readr,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    ggplot2,
+    reshape2

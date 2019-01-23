@@ -7,7 +7,7 @@
 site_recap(site_name)
 }
 \arguments{
-\item{site_name}{}
+\item{site_name}{name of site of interest}
 }
 \value{
 a table of fish that have been recaptured at a given site

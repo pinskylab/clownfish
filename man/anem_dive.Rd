@@ -7,7 +7,7 @@
 anem_dive(anems_ids)
 }
 \arguments{
-\item{anem_ids}{anem(s) for which to get data}
+\item{anems_ids}{table containing anem ids}
 }
 \description{
 for a given anemone , returns site, date, divetype

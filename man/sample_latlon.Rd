@@ -7,7 +7,7 @@
 sample_latlon(sample_ids)
 }
 \arguments{
-\item{sample_ids}{}
+\item{sample_ids}{table containing sample ids}
 }
 \value{
 a table of sample_ids with lat lons
