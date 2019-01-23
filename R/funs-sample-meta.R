@@ -90,15 +90,16 @@ daterange_dive <- function(begin_date, end_date){
 sample_latlon <- function(sample_ids){
   # find the anem_table_id for the sample
     fish <- fish_anem_dive() %>%
-    select(sample_id,anem_table_id, anem_obs_time, dive_table_id, date, gps) %>%
+      mutate(fish_obs_time = ifelse(is.na(fish_obs_time), anem_obs_time, fish_obs_time)) %>% 
+    select(sample_id, fish_obs_time, date, gps) %>%
     filter(sample_id %in% sample_ids) %>%
     # identify time zone as Asia
-    mutate(anem_obs_time = lubridate::force_tz(lubridate::ymd_hms(str_c(date, anem_obs_time, sep = " ")), tzone = "Asia/Manila"),
+    mutate(fish_obs_time = lubridate::force_tz(lubridate::ymd_hms(str_c(date, fish_obs_time, sep = " ")), tzone = "Asia/Manila"),
            # convert to UTC
-           anem_obs_time = lubridate::with_tz(anem_obs_time, tzone = "UTC"),
-           gpx_date = lubridate::date(anem_obs_time),
-           gpx_hour = lubridate::hour(anem_obs_time),
-           minute = lubridate::minute(anem_obs_time))
+           fish_obs_time = lubridate::with_tz(fish_obs_time, tzone = "UTC"),
+           gpx_date = lubridate::date(fish_obs_time),
+           gpx_hour = lubridate::hour(fish_obs_time),
+           minute = lubridate::minute(fish_obs_time))
            
            
 leyte <- read_db("Leyte")    
@@ -127,6 +128,49 @@ leyte <- read_db("Leyte")
 
   return(coord)
 
+}
+
+
+anem_latlon <- function(anem_ids){
+  # find the anem_table_id for the sample
+  anem <- anem_dive() %>%
+    select(anem_id, anem_obs, anem_obs_time, date, gps) %>%
+    filter(anem_id %in% anem_ids) %>%
+    # identify time zone as Asia
+    mutate(anem_obs_time = lubridate::force_tz(lubridate::ymd_hms(str_c(date, anem_obs_time, sep = " ")), tzone = "Asia/Manila"),
+           # convert to UTC
+           anem_obs_time = lubridate::with_tz(anem_obs_time, tzone = "UTC"),
+           gpx_date = lubridate::date(anem_obs_time),
+           gpx_hour = lubridate::hour(anem_obs_time),
+           minute = lubridate::minute(anem_obs_time))
+  
+  
+  leyte <- read_db("Leyte")    
+  gpx <- leyte %>%
+    tbl("GPX") %>%
+    select(lat, lon, time, unit) %>%
+    collect() %>%
+    separate(time, into = c("gpx_date", "gps_time"), sep = " ") %>%
+    mutate(gpx_date = lubridate::date(gpx_date)) %>%
+    filter(gpx_date %in% anem$gpx_date) %>%
+    separate(gps_time, into = c("gpx_hour", "minute", "second"), sep = ":") %>%
+    filter(as.numeric(gpx_hour) %in% anem$gpx_hour & as.numeric(minute) %in% anem$minute) %>%
+    mutate(gpx_hour = as.numeric(gpx_hour),
+           minute = as.numeric(minute))
+  
+  # find matches for times to assign lat long - there are more than one set of seconds (sec.y) that match
+  anem <- left_join(anem, gpx, by = c("gps" = "unit",  "gpx_date","gpx_hour", "minute")) %>%
+    mutate(lat = as.numeric(lat),
+           lon = as.numeric(lon)) # need to make decimal 5 digits - why? because that is all the gps can hold
+  
+  # calculate a mean lat lon for each anem observation
+  coord <- anem %>%
+    group_by(anem_id, anem_obs) %>% 
+    summarise(lat = mean(lat, na.rm = TRUE),
+              lon = mean(lon, na.rm = T))
+  
+  return(coord)
+  
 }
 
 
