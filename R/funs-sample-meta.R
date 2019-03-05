@@ -67,7 +67,7 @@ sample_latlon <- function(sample_ids){
            gpx_hour = lubridate::hour(fish_obs_time),
            minute = lubridate::minute(fish_obs_time))
            
-if(!exists(leyte))
+if(!exists("leyte"))
   stop("Error: db connection called 'leyte' does not exist, see Michelle for help")
 
   gpx <- leyte %>%
@@ -112,7 +112,7 @@ anem_latlon <- function(anem_ids){
            minute = lubridate::minute(anem_obs_time))
   
   
-  if(!exists(leyte))
+  if(!exists("leyte"))
     stop("Error: db connection called 'leyte' does not exist, see Michelle for help")   
   gpx <- leyte %>%
     tbl("GPX") %>%
@@ -196,7 +196,7 @@ change_rows <- function(table, change, identifier){
 #' anem_17 <- get_anem() %>% filter(anem_id > 2000)
 
 get_anem <- function(){
-  if(!exists(leyte))
+  if(!exists("leyte"))
     stop("Error: db connection called 'leyte' does not exist, see Michelle for help")
   
   anem <- leyte %>%
@@ -215,7 +215,7 @@ get_anem <- function(){
 #' @examples
 #' dive <- get_dive()
 get_dive <- function(){
-  if(!exists(leyte))
+  if(!exists("leyte"))
     stop("Error: db connection called 'leyte' does not exist, see Michelle for help")
   dive <- leyte %>%
     tbl("diveinfo") %>%
@@ -233,7 +233,7 @@ get_dive <- function(){
 #' @examples
 #' fish <- get_fish()
 get_fish <- function(){
-  if(!exists(leyte))
+  if(!exists("leyte"))
     stop("Error: db connection called 'leyte' does not exist, see Michelle for help")
   fish <- leyte %>%
     tbl("clownfish") %>%

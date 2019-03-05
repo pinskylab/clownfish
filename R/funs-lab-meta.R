@@ -304,7 +304,7 @@ assign_mek_loc <- function(plate_names, table, dest_or_source, identifier){
 
 samp_from_lig <- function(table_name){
   
-  if(!exists(lab))
+  if(!exists("lab"))
     stop("Error: db connection called 'lab' does not exist, see Michelle for help")
   
   # connect ligation ids to digest ids
@@ -379,7 +379,7 @@ heatmap <- function(plate_as_long_table, id){
 #' @examples
 #' 
 work_history <- function(table, id_column){
-  if(!exists(lab))
+  if(!exists("lab"))
     stop("Error: db connection called 'lab' does not exist, see Michelle for help")
   
   if(id_column == "sample_id"){
@@ -504,7 +504,7 @@ work_history <- function(table, id_column){
 
 get_lig <- function(){
   
-  if(!exists(lab))
+  if(!exists("lab"))
     stop("Error: db connection called 'lab' does not exist, see Michelle for help")
   
   lig <- lab %>% 
@@ -524,7 +524,7 @@ get_lig <- function(){
 #' test <- get_dig() %>% select(digest_id, extraction_id)
 #' 
 get_dig <- function(){
-  if(!exists(lab))
+  if(!exists("lab"))
     stop("Error: db connection called 'lab' does not exist, see Michelle for help")
   
   dig <- lab %>% 
@@ -544,7 +544,7 @@ get_dig <- function(){
 
 
 get_extr <- function(){
-  if(!exists(lab))
+  if(!exists("lab"))
     stop("Error: db connection called 'lab' does not exist, see Michelle for help")
   
   extr <- lab %>% 
