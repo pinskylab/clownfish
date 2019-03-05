@@ -1,40 +1,6 @@
 # functions to help while maintaining the database
 # one source for all of the helper functions to work with Leyte database and clownfish data
 
-
-#' read_db is a helper function to connect to db with read only intent
-#' @export
-#' @importFrom dplyr src_mysql
-#' @name read_db
-#' @author Michelle Stuart
-#'
-#' @param x = which db?
-#'
-#' @examples
-#' db <- read_Db("Leyte")
-
-read_db <- function(x){
-  library(dplyr)
-  db <- src_mysql(dbname = x, default.file = path.expand("~/myconfig.cnf"), port = 3306, create = F, host = NULL, username = NULL, password = NULL)
-  return(db)
-}
-
-
-#' write_db establishes a connection with the mysql db with intent to change it
-#'
-#' @param db_name name of db you want to access
-#'
-#' @return database connection
-#' @export
-#'
-#' @examples
-#' leyte <- write_db("Leyte")
-
-write_db <- function(db_name){
-  db <- dbConnect(MySQL(), dbname = db_name, default.file = path.expand("~/myconfig.cnf"), port = 3306, create = F, host = NULL, user = NULL, password = NULL)
-  return(db)
-}
-
 #' site_recap finds recaptured fish by site
 #'
 #' @param site_name name of site of interest
@@ -101,8 +67,9 @@ sample_latlon <- function(sample_ids){
            gpx_hour = lubridate::hour(fish_obs_time),
            minute = lubridate::minute(fish_obs_time))
            
-           
-leyte <- read_db("Leyte")    
+if(!exists(leyte))
+  stop("Error: db connection called 'leyte' does not exist, see Michelle for help")
+
   gpx <- leyte %>%
     tbl("GPX") %>%
     select(lat, lon, time, unit) %>%
@@ -145,7 +112,8 @@ anem_latlon <- function(anem_ids){
            minute = lubridate::minute(anem_obs_time))
   
   
-  leyte <- read_db("Leyte")    
+  if(!exists(leyte))
+    stop("Error: db connection called 'leyte' does not exist, see Michelle for help")   
   gpx <- leyte %>%
     tbl("GPX") %>%
     select(lat, lon, time, unit) %>%
@@ -228,7 +196,9 @@ change_rows <- function(table, change, identifier){
 #' anem_17 <- get_anem() %>% filter(anem_id > 2000)
 
 get_anem <- function(){
-  leyte <- read_db("Leyte")
+  if(!exists(leyte))
+    stop("Error: db connection called 'leyte' does not exist, see Michelle for help")
+  
   anem <- leyte %>%
     tbl("anemones") %>%
     collect()
@@ -245,7 +215,8 @@ get_anem <- function(){
 #' @examples
 #' dive <- get_dive()
 get_dive <- function(){
-  leyte <- read_db("Leyte")
+  if(!exists(leyte))
+    stop("Error: db connection called 'leyte' does not exist, see Michelle for help")
   dive <- leyte %>%
     tbl("diveinfo") %>%
     collect()
@@ -262,7 +233,8 @@ get_dive <- function(){
 #' @examples
 #' fish <- get_fish()
 get_fish <- function(){
-  leyte <- read_db("Leyte")
+  if(!exists(leyte))
+    stop("Error: db connection called 'leyte' does not exist, see Michelle for help")
   fish <- leyte %>%
     tbl("clownfish") %>%
     collect()
