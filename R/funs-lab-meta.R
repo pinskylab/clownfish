@@ -553,3 +553,40 @@ get_extr <- function(){
   
   return(extr)
 }
+
+# lig_from_samp ####
+#' views all of the fish recaptured at a given site
+#' @export
+#' @name lig_from_samp
+#' @author Michelle Stuart
+#' @param x = list of sample_ids
+#' @examples 
+#' fish <- lig_from_samp(c("APCL13_516", "APCL13_517"))
+
+lig_from_samp <- function(sample_ids){
+  
+  lab <- read_db("Laboratory")
+  
+  extr <- lab %>% 
+    tbl("extraction") %>% 
+    filter(sample_id %in% sample_ids) %>% 
+    select(sample_id, extraction_id) %>% 
+    collect()
+  
+  dig <- lab %>% 
+    tbl("digest") %>% 
+    filter(extraction_id %in% extr$extraction_id) %>%
+    select(extraction_id, digest_id) %>% 
+    collect()
+  
+  lig <- lab %>% 
+    tbl("ligation") %>% 
+    filter(digest_id %in% dig$digest_id) %>%
+    select(ligation_id, digest_id) %>% 
+    collect()
+  
+  mid <- left_join(extr, dig, by = "extraction_id")
+  lig <- left_join(mid, lig, by = "digest_id") 
+  
+  return(lig)
+}
