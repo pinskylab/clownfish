@@ -387,7 +387,7 @@ work_history <- function(table, id_column){
       filter(sample_id %in% table$sample_id) %>% 
       select(sample_id, extraction_id, well, plate) %>% 
       rename(extr_well = well, 
-             extr_plate == plate)
+             extr_plate = plate)
     
     dig <- get_dig() %>% 
       filter(extraction_id %in% hist$extraction_id) %>% 
@@ -413,7 +413,7 @@ work_history <- function(table, id_column){
       filter(extraction_id %in% table$extraction_id) %>% 
       select(sample_id, extraction_id, well, plate) %>% 
       rename(extr_well = well, 
-             extr_plate == plate)
+             extr_plate = plate)
     
     dig <- get_dig() %>% 
       filter(extraction_id %in% hist$extraction_id) %>% 
@@ -446,7 +446,7 @@ work_history <- function(table, id_column){
       filter(extraction_id %in% dig$extraction_id) %>% 
       select(sample_id, extraction_id, well, plate) %>% 
       rename(extr_well = well, 
-             extr_plate == plate)
+             extr_plate = plate)
     
     
     hist <- left_join(hist, dig, by = "extraction_id")
@@ -482,7 +482,7 @@ work_history <- function(table, id_column){
       filter(extraction_id %in% dig$extraction_id) %>% 
       select(sample_id, extraction_id, well, plate) %>% 
       rename(extr_well = well, 
-             extr_plate == plate)
+             extr_plate = plate)
     
     hist <- left_join(hist, extr, by = "extraction_id")
   
